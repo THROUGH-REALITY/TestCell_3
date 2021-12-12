@@ -26,13 +26,8 @@ class GridWorld:
         if self.map[start_y,start_x] != 0 :
             self.map[start_y,start_x] = 0
 
-        """
-        self.map = [[0, 2, 0, 1],
-                    [0, 0, 0, 2],
-                    [0, 0, 2, 0],
-                    [2, 0, 2, 0],
-                    [0, 0, 0, 0]]
-        """
+        self.zero_list = list(zip(*np.where( self.map < 1)))
+
         self.start_pos = start_x,start_y   # エージェントのスタート地点(x, y)
         self.agent_pos = copy.deepcopy(self.start_pos)  # エージェントがいる地点
 

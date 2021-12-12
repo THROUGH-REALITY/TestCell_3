@@ -1,4 +1,5 @@
 import matplotlib.animation as animation
+import random
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import PillowWriter
@@ -13,24 +14,26 @@ GAMMA = .90     # 割引率
 ACTIONS = np.arange(4)  # 行動の集合
 
 
-
 class Summon:
 
-    def __init__(self, population=2):
-        self.agents = self.__generate_agents(population)
+    def __init__(self, zero_list, population=2):
+        self.agents = self.__generate_agents(zero_list, population)
 
-    def __generate_agents(self, population):
-        agents = [ QLearningAgent(
-            alpha=ALPHA,
-            gamma=GAMMA,
-            epsilon=EPSILON,
-            actions=ACTIONS,
-            observation=ini_state) for id in range(population)]
-        return agents
+    def __generate_agents(self, zero_list, population):
+        agents = []
+        for id in range(population):
+            ini_state = random.choice(zero_list) # 初期状態（エージェントのスタート地点の位置）
+            agents.append(
+                QLearningAgent(
+                    alpha=ALPHA,
+                    gamma=GAMMA,
+                    epsilon=EPSILON,
+                    actions=ACTIONS,
+                    observation=ini_state))
         times = []
-        is_end_episode = False  # エージェントがゴールしてるかどうか？
+        self.is_end_episode = False  # エージェントがゴールしてるかどうか？
+        return agents
 
-#ini_state = grid_env.start_pos  # 初期状態（エージェントのスタート地点の位置）
 
 class Hoge:    
     def move(self):

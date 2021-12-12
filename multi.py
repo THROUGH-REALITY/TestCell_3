@@ -1,5 +1,5 @@
 import time
-import numpy as numpy
+import numpy as np
 
 from grid_world import GridWorld
 from main import Summon
@@ -17,7 +17,10 @@ grid_env = GridWorld(   # grid worldの環境の初期化
     start_x=START_X,
     start_y=START_Y)
 
-summon = Summon(population= POPULATION)
+
+summon = Summon(
+    zero_list=grid_env.zero_list,
+    population= POPULATION)
 
 print(summon.agents)
 
