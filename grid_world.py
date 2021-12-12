@@ -4,8 +4,10 @@ import numpy as np
 
 class GridWorld:
 
-    def __init__(self, x_max, y_max, start_x, start_y):
+    def __init__(self, x_max, y_max):
 
+        self.x_max = x_max
+        self.y_max = y_max
         self.filed_type = {
             "N": 0,  # 通常
             "G": 1,  # ゴール
@@ -23,23 +25,21 @@ class GridWorld:
         self.map[:, ::2] = 0
         self.map[0,0] = 1
 
-        if self.map[start_y,start_x] != 0 :
-            self.map[start_y,start_x] = 0
-
         self.zero_list = list(zip(*np.where( self.map < 1)))
 
-        self.start_pos = start_x,start_y   # エージェントのスタート地点(x, y)
-        self.agent_pos = copy.deepcopy(self.start_pos)  # エージェントがいる地点
+        #self.start_pos = start_x,start_y   # エージェントのスタート地点(x, y)
+        #self.agent_pos = copy.deepcopy(self.start_pos)  # エージェントがいる地点
 
-    def step(self, action):
+    def step(self, start_x, start_y, action):
         """
             行動の実行
             状態, 報酬、ゴールしたかを返却
         """
-        to_x, to_y = copy.deepcopy(self.agent_pos)
+        to_x, to_y = start_x, start_y
 
         # 移動可能かどうかの確認。移動不可能であれば、ポジションはそのままにマイナス報酬
         if self._is_possible_action(to_x, to_y, action) == False:
+            self.agent_pos = to_x, to_y
             return self.agent_pos, -10, False
 
         if action == self.actions["UP"]:
@@ -86,30 +86,30 @@ class GridWorld:
         to_y = y
 
         if action == self.actions["UP"]:
-            #print("上に行った")
+            print("下に行った")
             to_y += -1
             #print(to_y,to_x)
         elif action == self.actions["DOWN"]:
-            #print("下に行った")
+            print("上に行った")
             to_y += 1
             #print(to_y,to_x)
         elif action == self.actions["LEFT"]:
-            #print("左に行った")
+            print("左に行った")
             to_x += -1
             #print(to_y,to_x)
         elif action == self.actions["RIGHT"]:
-            #print("右に行った")
+            print("右に行った")
             to_x += 1
             #print(to_y,to_x)
 
         if self.map.shape[0] <= to_y or 0 > to_y:
-            #print("y行き過ぎ")
+            print("y行き過ぎ")
             return False
         elif self.map.shape[1] <= to_x or 0 > to_x:
-            #print("x行き過ぎ")
+            print("x行き過ぎ")
             return False
         elif self._is_wall(to_x, to_y):
-            #print("壁だった")
+            print("壁だった")
             #print(to_y,to_x)
             return False
 
@@ -124,5 +124,9 @@ class GridWorld:
             return -100
 
     def reset(self):
+        self.map = np.zeros((self.y_max,self.x_max))
+        self.map[::2] = 2 
+        self.map[:, ::2] = 0
+        self.map[0,0] = 1
         self.agent_pos = self.start_pos
         return self.start_pos
