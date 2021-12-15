@@ -8,6 +8,7 @@ ALPHA = .1      # 学習率
 GAMMA = .90     # 割引率
 ACTIONS = np.arange(4)  # 行動の集合
 
+
 class Summon:
 
     def __init__(self, zero_list, population=2):

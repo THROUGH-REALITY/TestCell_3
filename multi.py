@@ -1,6 +1,5 @@
 import time
 
-import numpy as np
 import matplotlib.pyplot as plt
 from grid_world import GridWorld
 from qlearning_agent import Summon
