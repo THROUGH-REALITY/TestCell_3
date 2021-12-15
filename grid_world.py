@@ -123,10 +123,10 @@ class GridWorld:
         #elif self.map[y,x] == self.filed_type["T"]:
             return -100
 
-    def reset(self):
+    def reset(self,init_pos):
         self.map = np.zeros((self.y_max,self.x_max))
         self.map[::2] = 2 
         self.map[:, ::2] = 0
         self.map[0,0] = 1
-        self.agent_pos = self.start_pos
-        return self.start_pos
+        self.agent_pos = init_pos
+        return self.agent_pos
