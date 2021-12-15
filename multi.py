@@ -9,7 +9,7 @@ from qlearning_agent import Summon
 NB_EPISODE = 1   # エピソード数
 X_MAX = 15
 Y_MAX = 18
-POPULATION = 2
+POPULATION = 40
 start = time.time()
 
 if __name__ == '__main__':
@@ -40,20 +40,19 @@ if __name__ == '__main__':
                     start_x = summon.agents[id].observation[0]
                     start_y = summon.agents[id].observation[1]
                     grid_env.map[start_x][start_y] = 0
-                    print(start_x,start_y)
                     action = summon.agents[id].act()  # 行動選択
-                    print(action)
                     state, reward, is_end_episode[id] = grid_env.step(start_x, start_y, action)
-                else: grid_env.map[0,0] = 1
+                else:
+                     grid_env.map[0][0] = 1
+                     #plt.imshow(grid_env.map)
+                     #plt.show()
                 if is_end_episode[id] == False:
                     grid_env.map[state[0]][state[1]] = 3
-                    print(state,reward)
+                    #print(state,reward)
                     summon.agents[id].observe(state, reward)   # 状態と報酬の観測
-                plt.imshow(grid_env.map)
-                plt.show()
-        print(is_end_episode)    
-            #episode_reward.append(reward)
-            #rewards.append(np.sum(episode_reward))  # このエピソードの平均報酬を与える
+        print(f"EP.{episode +1} End")    
+        #episode_reward.append(reward)
+        #rewards.append(np.sum(episode_reward))  # このエピソードの平均報酬を与える
         #times.append(len(episode_reward)) #かかった時間をリストに追加
         state = grid_env.reset()  # 初期化
         #agent.observe(state)    # エージェントを初期位置に

@@ -60,7 +60,7 @@ class GridWorld:
         """
             x, yがエピソードの終了かの確認。
         """
-        if self.map[y,x] == self.filed_type["G"]: # ゴール
+        if self.map[x][y] == self.filed_type["G"]: # ゴール
             return True
         #elif self.map[y][x] == self.filed_type["T"]:    # トラップ
             return True
@@ -71,9 +71,9 @@ class GridWorld:
         """
             x, yが壁または人間かどうかの確認
         """
-        if self.map[y,x] == self.filed_type["W"]:
+        if self.map[x][y] == self.filed_type["W"]:
             return True
-        elif self.map[y,x] == self.filed_type["H"]:
+        elif self.map[x][y] == self.filed_type["H"]:
             return True
         else:
             return False
@@ -86,39 +86,39 @@ class GridWorld:
         to_y = y
 
         if action == self.actions["UP"]:
-            print("下に行った")
+            #print("下(左)に行った")
             to_y += -1
             #print(to_y,to_x)
         elif action == self.actions["DOWN"]:
-            print("上に行った")
+            #print("上(右)に行った")
             to_y += 1
             #print(to_y,to_x)
         elif action == self.actions["LEFT"]:
-            print("左に行った")
+            #print("左(上)に行った")
             to_x += -1
             #print(to_y,to_x)
         elif action == self.actions["RIGHT"]:
-            print("右に行った")
+            #print("右(下)に行った")
             to_x += 1
             #print(to_y,to_x)
 
-        if self.map.shape[0] <= to_y or 0 > to_y:
-            print("y行き過ぎ")
+        if self.map.shape[1] <= to_y or 0 > to_y:
+            #print("y行き過ぎ")
             return False
-        elif self.map.shape[1] <= to_x or 0 > to_x:
-            print("x行き過ぎ")
+        elif self.map.shape[0] <= to_x or 0 > to_x:
+            #print("x行き過ぎ")
             return False
         elif self._is_wall(to_x, to_y):
-            print("壁だった")
+            #print("壁だった")
             #print(to_y,to_x)
             return False
 
         return True
 
     def _compute_reward(self, x, y):
-        if self.map[y,x] == self.filed_type["N"]:
+        if self.map[x][y] == self.filed_type["N"]:
             return 0
-        elif self.map[y,x] == self.filed_type["G"]:
+        elif self.map[x][y] == self.filed_type["G"]:
             return 100
         #elif self.map[y,x] == self.filed_type["T"]:
             return -100

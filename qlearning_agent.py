@@ -45,6 +45,7 @@ class QLearningAgent:
         self.epsilon = epsilon
         self.reward_history = []
         self.actions = actions
+        self.init_pos = observation
         self.observation = observation
         self.state = str(observation)
         self.ini_state = str(observation)
@@ -82,13 +83,14 @@ class QLearningAgent:
         """
             次の状態と報酬の観測
         """
+        self.observation = next_state
         next_state = str(next_state)
         if next_state not in self.q_values:  # 始めて訪れる状態であれば
             self.q_values[next_state] = np.repeat(0.0, len(self.actions))
 
         self.previous_state = copy.deepcopy(self.state)
         self.state = next_state
-
+        
         if reward is not None:
             self.reward_history.append(reward)
             self.learn(reward)
