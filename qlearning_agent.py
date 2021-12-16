@@ -24,7 +24,7 @@ class Summon:
                     gamma=GAMMA,
                     epsilon=EPSILON,
                     actions=ACTIONS,
-                    observation=ini_state)) 
+                    observation=ini_state))
         return agents
 
 
