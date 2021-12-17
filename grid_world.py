@@ -20,13 +20,14 @@ class GridWorld:
             "LEFT": 2,
             "RIGHT": 3
         }
-        self.map = np.zeros((y_max,x_max))
-        self.map[::2] = 2 
-        self.map[:, ::2] = 0
-        self.map[0,0] = 1
+        self.map_arr = np.zeros((y_max,x_max))
+        self.map_arr[::2] = 2 
+        self.map_arr[:, ::2] = 0
+        self.map_arr[0,0] = 1
+        self.map_arr[x_max-1,0] = 1
+        self.map = self.map_arr.tolist()
 
-        self.zero_list = list(zip(*np.where( self.map < 1)))
-
+        self.zero_list = list(zip(*np.where( self.map_arr < 1)))
         #self.start_pos = start_x,start_y   # エージェントのスタート地点(x, y)
         #self.agent_pos = copy.deepcopy(self.start_pos)  # エージェントがいる地点
 
@@ -38,9 +39,13 @@ class GridWorld:
         to_x, to_y = start_x, start_y
 
         # 移動可能かどうかの確認。移動不可能であれば、ポジションはそのままにマイナス報酬
-        if self._is_possible_action(to_x, to_y, action) == False:
+        action_possibility = self._is_possible_action(to_x, to_y, action)
+        if action_possibility == False:
             self.agent_pos = to_x, to_y
-            return self.agent_pos, -10, False
+            return self.agent_pos, -15, False
+        elif action_possibility == something:
+            self.agent_pos = to_x, to_y
+            return self.agent_pos, -1, False
 
         if action == self.actions["UP"]:
             to_y += -1
@@ -61,8 +66,7 @@ class GridWorld:
             x, yがエピソードの終了かの確認。
         """
         if self.map[x][y] == self.filed_type["G"]: # ゴール
-            return True
-        #elif self.map[y][x] == self.filed_type["T"]:    # トラップ
+            #print("Agent GOAL")
             return True
         else:
             return False
@@ -73,7 +77,11 @@ class GridWorld:
         """
         if self.map[x][y] == self.filed_type["W"]:
             return True
-        elif self.map[x][y] == self.filed_type["H"]:
+        else:
+            return False
+    
+    def _is_other_agent(self, x, y):
+        if self.map[x][y] == self.filed_type["H"]:
             return True
         else:
             return False
@@ -102,14 +110,18 @@ class GridWorld:
             to_x += 1
             #print(to_y,to_x)
 
-        if self.map.shape[1] <= to_y or 0 > to_y:
+        if len(self.map[1]) <= to_y or 0 > to_y:
             #print("y行き過ぎ")
             return False
-        elif self.map.shape[0] <= to_x or 0 > to_x:
+        elif len(self.map[0]) <= to_x or 0 > to_x:
             #print("x行き過ぎ")
             return False
         elif self._is_wall(to_x, to_y):
             #print("壁だった")
+            #print(to_y,to_x)
+            return False
+        elif self._is_other_agent(to_x, to_y):
+            #print("人だった")
             #print(to_y,to_x)
             return False
 
@@ -124,9 +136,6 @@ class GridWorld:
             return -100
 
     def reset(self,init_pos):
-        self.map = np.zeros((self.y_max,self.x_max))
-        self.map[::2] = 2 
-        self.map[:, ::2] = 0
-        self.map[0,0] = 1
+        self.map = self.map_arr.tolist()
         self.agent_pos = init_pos
         return self.agent_pos

@@ -30,6 +30,13 @@ class Summon:
                     observation=ini_state)) 
         return agents
 
+class Plotting:
+
+    def text(array,ax,color):
+        for num_r,row in enumerate(array):
+            for num_c,value in enumerate(array[num_r]):
+                ax.text(num_c, num_r, value, size=6, color=color, ha='center', va='center')
+
 #for episode in range(NB_EPISODE):
 
     """
