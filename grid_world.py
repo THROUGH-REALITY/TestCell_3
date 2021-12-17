@@ -24,7 +24,7 @@ class GridWorld:
         self.map_arr[::2] = 2 
         self.map_arr[:, ::2] = 0
         self.map_arr[0,0] = 1
-        self.map_arr[x_max-1,0] = 1
+        #self.map_arr[x_max-1,0] = 1
         self.map = self.map_arr.tolist()
 
         self.zero_list = list(zip(*np.where( self.map_arr < 1)))
@@ -40,12 +40,12 @@ class GridWorld:
 
         # 移動可能かどうかの確認。移動不可能であれば、ポジションはそのままにマイナス報酬
         action_possibility = self._is_possible_action(to_x, to_y, action)
-        if action_possibility == False:
+        if action_possibility == 1:
             self.agent_pos = to_x, to_y
             return self.agent_pos, -15, False
-        elif action_possibility == something:
+        elif action_possibility == 2:
             self.agent_pos = to_x, to_y
-            return self.agent_pos, -1, False
+            return self.agent_pos, 0, False
 
         if action == self.actions["UP"]:
             to_y += -1
@@ -112,20 +112,20 @@ class GridWorld:
 
         if len(self.map[1]) <= to_y or 0 > to_y:
             #print("y行き過ぎ")
-            return False
+            return 1
         elif len(self.map[0]) <= to_x or 0 > to_x:
             #print("x行き過ぎ")
-            return False
+            return 1
         elif self._is_wall(to_x, to_y):
             #print("壁だった")
             #print(to_y,to_x)
-            return False
+            return 1
         elif self._is_other_agent(to_x, to_y):
             #print("人だった")
             #print(to_y,to_x)
-            return False
+            return 2
 
-        return True
+        return 0
 
     def _compute_reward(self, x, y):
         if self.map[x][y] == self.filed_type["N"]:

@@ -9,10 +9,10 @@ from qlearning_agent import Summon
 from main import Plotting
 
 # 定数
-NB_EPISODE = 3   # エピソード数
-X_MAX = 10
-Y_MAX = 10
-POPULATION = 10
+NB_EPISODE = 10   # エピソード数
+X_MAX = 8
+Y_MAX = 8
+POPULATION = 3
 start = time.time()
 
 if __name__ == '__main__':
@@ -46,7 +46,7 @@ if __name__ == '__main__':
                     episode_reward[id][episode] += 1
                 else:
                     grid_env.map[0][0] = 1
-                    grid_env.map[X_MAX-1][0] = 1
+                    #grid_env.map[X_MAX-1][0] = 1
         for id in summon.agents:
             id.observation = grid_env.reset(id.init_pos)  # 初期化
             #print(summon.agents[id].observation)
