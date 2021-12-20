@@ -9,10 +9,10 @@ from qlearning_agent import Summon
 from main import Plotting
 
 # 定数
-NB_EPISODE = 10   # エピソード数
-X_MAX = 8
-Y_MAX = 8
-POPULATION = 3
+NB_EPISODE = 15   # エピソード数
+X_MAX = 10
+Y_MAX = 10
+POPULATION = 30
 start = time.time()
 
 if __name__ == '__main__':
