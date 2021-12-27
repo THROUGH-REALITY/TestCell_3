@@ -7,7 +7,7 @@ from matplotlib.animation import PillowWriter
 
 from qlearning_agent import QLearningAgent
 
-EPSILON = .1    # 探索率
+EPSILON = 0    # 探索率
 ALPHA = .1      # 学習率
 GAMMA = .90     # 割引率
 ACTIONS = np.arange(4)  # 行動の集合

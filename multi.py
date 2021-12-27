@@ -9,10 +9,10 @@ from qlearning_agent import Summon
 from main import Plotting
 
 # 定数
-NB_EPISODE = 15   # エピソード数
+NB_EPISODE = 50   # エピソード数
 X_MAX = 10
 Y_MAX = 10
-POPULATION = 30
+POPULATION = 10
 start = time.time()
 
 if __name__ == '__main__':
@@ -52,17 +52,29 @@ if __name__ == '__main__':
             #print(summon.agents[id].observation)
         #agent.observe(state)    # エージェントを初期位置に
         print(f"EP.{episode +1} End time = {time.time()-start}") #(t = {len(episode_reward)})"# 所要時間の計算
-    fig = plt.figure()
-    ax1 = fig.add_subplot(1,2,1,title="init_state", xlabel='x', ylabel='y')
-    ax2 = fig.add_subplot(1,2,2,title="reward", xlabel='episode', ylabel='Agents_id')
+    fig = plt.figure(tight_layout=True)  # 図を描く大きさと、図の変数名を宣言
+    gs = fig.add_gridspec(1, 3)
+    ax1 = fig.add_subplot(
+        gs[0, 0],
+        xlabel="X",
+        ylabel="Y",
+        title="init_state")
+    ax1.text(0, 0.2, 'G', ha='center')
     ax1.imshow(init_map)
-    ax2.imshow(episode_reward)
+    ax2 = fig.add_subplot(
+        gs[0, 1:],
+        xlabel="episode",
+        ylabel="Agents_ID",
+        title="Result",
+        xlim=(0,NB_EPISODE))
+    for id in range(POPULATION):
+        ax2.plot(np.arange(NB_EPISODE),episode_reward[id])
     ax1.xaxis.set_major_locator(ticker.MultipleLocator())
     ax1.yaxis.set_major_locator(ticker.MultipleLocator())
-    ax2.xaxis.set_major_locator(ticker.MultipleLocator())
-    ax2.yaxis.set_major_locator(ticker.MultipleLocator())
-    Plotting.text(episode_reward,ax2,"deeppink")
+    ax2.xaxis.set_major_locator(ticker.MultipleLocator(5))
+    ax2.yaxis.set_major_locator(ticker.MultipleLocator(100))
+    #Plotting.text(episode_reward,ax2,"deeppink")
     for index,value in enumerate(summon.agents):
-        ax1.text(value.init_pos[1], value.init_pos[0], index, size=11, color='deeppink', ha='center', va='center')
+        ax1.text(value.init_pos[1], value.init_pos[0], index, size=12, color='deeppink', ha='center', va='center')
     plt.savefig(f"result.png")
     plt.show()
