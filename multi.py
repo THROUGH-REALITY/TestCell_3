@@ -19,7 +19,7 @@ if __name__ == '__main__':
     grid_env = GridWorld(   # grid worldの環境の初期化
         x_max=X_MAX,
         y_max=Y_MAX)
-
+    """
     decided_zero = [grid_env.zero_list[10],
                     grid_env.zero_list[16],
                     grid_env.zero_list[23],
@@ -30,9 +30,10 @@ if __name__ == '__main__':
                     grid_env.zero_list[68],
                     grid_env.zero_list[79],
                     grid_env.zero_list[91]]
+    """
     
     summon = Summon(             # エージェントの召喚
-        zero_list=decided_zero,
+        zero_list=grid_env.zero_list,
         population=POPULATION)
     print(f"StaRt time = {time.time()-start}")    #times = []
 
@@ -43,6 +44,7 @@ if __name__ == '__main__':
             start_x = i.observation[0]
             start_y = i.observation[1]
             grid_env.map[start_x][start_y] = 3
+            print(start_x,start_y)
         init_map = np.array(grid_env.map)
         while(np.all(is_end_episode) == False):    # 全員がゴールするまで続ける
             for id,agent in enumerate(summon.agents):
@@ -50,11 +52,13 @@ if __name__ == '__main__':
                     start_x = agent.observation[0]
                     start_y = agent.observation[1]
                     grid_env.map[start_x][start_y] = 0
-                    action = agent.act()  # 行動選択
-                    state, reward, is_end_episode[id] = grid_env.step(start_x, start_y, action)
+                    state, is_end_episode[id] = grid_env.step(start_x, start_y)
+                    print(state)
                     grid_env.map[state[0]][state[1]] = 3
-                    agent.observe(state, reward)   # 状態と報酬の観測 
+                    agent.observe(state)   # 状態の観測 
                     episode_reward[episode][id] += 1
+                    #plt.imshow(grid_env.map)
+                    #plt.show()
                 else:
                     grid_env.map[0][0] = 1
                     #grid_env.map[X_MAX-1][0] = 1

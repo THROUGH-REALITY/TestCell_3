@@ -31,35 +31,22 @@ class GridWorld:
         #self.start_pos = start_x,start_y   # エージェントのスタート地点(x, y)
         #self.agent_pos = copy.deepcopy(self.start_pos)  # エージェントがいる地点
 
-    def step(self, start_x, start_y, action):
+    def step(self, start_x, start_y):
         """
             行動の実行
-            状態, 報酬、ゴールしたかを返却
+            状態、ゴールしたかを返却
         """
         to_x, to_y = start_x, start_y
-
-        # 移動可能かどうかの確認。移動不可能であれば、ポジションはそのままにマイナス報酬
-        action_possibility = self._is_possible_action(to_x, to_y, action)
-        if action_possibility == 1:
-            self.agent_pos = to_x, to_y
-            return self.agent_pos, -15, False
-        elif action_possibility == 2:
-            self.agent_pos = to_x, to_y
-            return self.agent_pos, 0, False
-
-        if action == self.actions["UP"]:
-            to_y += -1
-        elif action == self.actions["DOWN"]:
-            to_y += 1
-        elif action == self.actions["LEFT"]:
+        # 移動可能かどうかの確認。(左→無理なら上)
+        left_possibility = self._is_possible_action(to_x, to_y, action=self.actions["UP"])
+        if left_possibility != 0:
             to_x += -1
-        elif action == self.actions["RIGHT"]:
-            to_x += 1
-
+        elif self._is_possible_action(to_x, to_y, action=self.actions["LEFT"]):
+            to_y += -1
+        #up_possibility = self._is_possible_action(to_x, to_y, action=self.actions["LEFT"])
         is_goal = self._is_end_episode(to_x, to_y)  # エピソードの終了の確認
-        reward = self._compute_reward(to_x, to_y)
         self.agent_pos = to_x, to_y
-        return self.agent_pos, reward, is_goal
+        return self.agent_pos, is_goal
 
     def _is_end_episode(self, x, y):
         """

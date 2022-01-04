@@ -17,7 +17,8 @@ class Summon:
     def __generate_agents(self, zero_list, population):
         agents = []
         for id in range(population):
-            ini_state = zero_list[id] # 初期状態（エージェントのスタート地点の位置）
+            ini_state = random.choice(zero_list) # 初期状態（エージェントのスタート地点の位置）
+            
             agents.append(
                 QLearningAgent(
                     alpha=ALPHA,
