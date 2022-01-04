@@ -38,12 +38,15 @@ class GridWorld:
         """
         to_x, to_y = start_x, start_y
 
+        if self._is_possible_action(to_x, to_y, 0) == 0:    #左の可能性を検証
+            self.agent_pos = to_x, to_y
+            return self.agent_pos, 0, False           
         # 移動可能かどうかの確認。移動不可能であれば、ポジションはそのままにマイナス報酬
         action_possibility = self._is_possible_action(to_x, to_y, action)
-        if action_possibility == 1:
+        if action_possibility == 1: #wall
             self.agent_pos = to_x, to_y
             return self.agent_pos, -15, False
-        elif action_possibility == 2:
+        elif action_possibility == 2:   #person
             self.agent_pos = to_x, to_y
             return self.agent_pos, 0, False
 

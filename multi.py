@@ -50,7 +50,7 @@ if __name__ == '__main__':
                     start_x = agent.observation[0]
                     start_y = agent.observation[1]
                     grid_env.map[start_x][start_y] = 0
-                    action = agent.act()  # 行動選択
+                    action = agent.act()  # 行動選択(random)
                     state, reward, is_end_episode[id] = grid_env.step(start_x, start_y, action)
                     grid_env.map[state[0]][state[1]] = 3
                     agent.observe(state, reward)   # 状態と報酬の観測 
