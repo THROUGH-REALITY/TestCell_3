@@ -36,7 +36,7 @@ if __name__ == '__main__':
         population=POPULATION)
     print(f"StaRt time = {time.time()-start}")    #times = []
 
-    episode_reward = np.zeros((POPULATION,NB_EPISODE))  # 1エピソードの累積報酬
+    episode_reward = np.zeros((NB_EPISODE, POPULATION))  # 1エピソードの累積報酬
     for episode in range(NB_EPISODE):   # 実験
         is_end_episode = np.zeros(POPULATION)
         for i in summon.agents:
@@ -54,7 +54,7 @@ if __name__ == '__main__':
                     state, reward, is_end_episode[id] = grid_env.step(start_x, start_y, action)
                     grid_env.map[state[0]][state[1]] = 3
                     agent.observe(state, reward)   # 状態と報酬の観測 
-                    episode_reward[id][episode] += 1
+                    episode_reward[episode][id] += 1
                 else:
                     grid_env.map[0][0] = 1
                     #grid_env.map[X_MAX-1][0] = 1
@@ -78,12 +78,13 @@ if __name__ == '__main__':
         ylabel="times",
         title="Result",
         xlim=(0,NB_EPISODE-1))
-    lines = [ax2.plot(np.arange(NB_EPISODE),episode_reward[id]) for id in range(POPULATION)]
+    avg = episode_reward.mean(axis=1)
+    print(avg)
+    lines = [ax2.plot(np.arange(NB_EPISODE),avg) for episode in range(NB_EPISODE)]
     y_min, max_y = ax2.get_ylim()
     ax2.set_ylim(0, max_y)
-    
     #ax2.legend(handles=lines[::-1], labels=[e for e in range(POPULATION)])
-    fig.legend()
+    #fig.legend()
     ax1.xaxis.set_major_locator(ticker.MultipleLocator())
     ax1.yaxis.set_major_locator(ticker.MultipleLocator())
     ax2.xaxis.set_major_locator(ticker.MultipleLocator(5))
