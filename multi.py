@@ -10,7 +10,7 @@ from qlearning_agent import Summon
 from main import Plotting
 
 # 定数
-NB_EPISODE = 31   # エピソード数
+NB_EPISODE = 51   # エピソード数
 X_MAX = 13
 Y_MAX = 13
 POPULATION = 10
@@ -21,6 +21,7 @@ if __name__ == '__main__':
         x_max=X_MAX,
         y_max=Y_MAX)
 
+    """
     decided_zero = [grid_env.zero_list[10],
                     grid_env.zero_list[16],
                     grid_env.zero_list[23],
@@ -31,16 +32,18 @@ if __name__ == '__main__':
                     grid_env.zero_list[68],
                     grid_env.zero_list[79],
                     grid_env.zero_list[91]]
-    
-    summon = Summon(             # エージェントの召喚
-        zero_list=decided_zero,
-        population=POPULATION)
-    print(f"StaRt time = {time.time()-start}")    #times = []
+    """
+
+
+    #print(f"StaRt time = {time.time()-start}")    #times = []
 
     action_exp = [0,2]
 
     episode_reward = np.zeros((NB_EPISODE, POPULATION))  # 1エピソードの累積報酬
     for episode in range(NB_EPISODE):   # 実験
+        summon = Summon(             # エージェントの召喚
+        zero_list=grid_env.zero_list,
+        population=POPULATION)
         is_end_episode = np.zeros(POPULATION)
         for i in summon.agents:
             start_x = i.observation[0]
@@ -67,7 +70,7 @@ if __name__ == '__main__':
             id.observation = grid_env.reset(id.init_pos)  # 初期化
             #print(summon.agents[id].observation)
         #agent.observe(state)    # エージェントを初期位置に
-        print(f"EP.{episode +1} End time = {time.time()-start}") #(t = {len(episode_reward)})"# 所要時間の計算
+        #print(f"EP.{episode +1} End time = {time.time()-start}") #(t = {len(episode_reward)})"# 所要時間の計算
     fig = plt.figure(figsize=(18,10), tight_layout=True)  # 図を描く大きさと、図の変数名を宣言
     gs = fig.add_gridspec(1, 3)
     ax1 = fig.add_subplot(
@@ -85,6 +88,7 @@ if __name__ == '__main__':
         xlim=(0,NB_EPISODE-1))
     avg = episode_reward.mean(axis=1)
     print(avg)
+    print(avg.mean())
     lines = [ax2.plot(np.arange(NB_EPISODE),avg) for episode in range(NB_EPISODE)]
     y_min, max_y = ax2.get_ylim()
     ax2.set_ylim(0, max_y)
@@ -93,7 +97,7 @@ if __name__ == '__main__':
     ax1.xaxis.set_major_locator(ticker.MultipleLocator())
     ax1.yaxis.set_major_locator(ticker.MultipleLocator())
     ax2.xaxis.set_major_locator(ticker.MultipleLocator(5))
-    ax2.yaxis.set_major_locator(ticker.MultipleLocator(100)) 
+    ax2.yaxis.set_major_locator(ticker.MultipleLocator()) 
     #Plotting.text(episode_reward,ax2,"deeppink")
     for index,value in enumerate(summon.agents):
         ax1.text(value.init_pos[1], value.init_pos[0], index, size=15, color='deeppink', ha='center', va='center')
