@@ -35,10 +35,9 @@ if __name__ == '__main__':
     """
 
 
-    #print(f"StaRt time = {time.time()-start}")    #times = []
+    print(f"StaRt time = {time.time()-start}")    #times = []
 
-    action_exp = [0,2]
-
+    fig_made = 0
     episode_reward = np.zeros((NB_EPISODE, POPULATION))  # 1エピソードの累積報酬
     for episode in range(NB_EPISODE):   # 実験
         summon = Summon(             # エージェントの召喚
@@ -51,15 +50,19 @@ if __name__ == '__main__':
             grid_env.map[start_x][start_y] = 3
         init_map = np.array(grid_env.map)
         while(np.all(is_end_episode) == False):    # 全員がゴールするまで続ける
+            fig_made += 1
             #plt.imshow(grid_env.map)
-            #plt.show()
+            #plt.savefig(f"gif_exp3/fig_{fig_made}.png")
             for id,agent in enumerate(summon.agents):
                 if is_end_episode[id] == False:
                     start_x = agent.observation[0]
                     start_y = agent.observation[1]
                     grid_env.map[start_x][start_y] = 0
-                    action = action_exp[int(episode_reward[episode][id])%2]
+                    action = 0
                     state, is_end_episode[id] = grid_env.step(start_x, start_y, action)
+                    if state == (start_x,start_y):
+                        action = 2
+                        state, is_end_episode[id] = grid_env.step(start_x, start_y, action)
                     grid_env.map[state[0]][state[1]] = 3
                     agent.observe(state)   # 状態と報酬の観測 
                     episode_reward[episode][id] += 1
