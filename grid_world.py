@@ -21,8 +21,8 @@ class GridWorld:
             "RIGHT": 3
         }
         self.map_arr = np.zeros((y_max,x_max))
-        self.map_arr[::2] = 2 
-        self.map_arr[:, ::2] = 0
+        self.map_arr[:, 1::2] = 2 
+        self.map_arr[::2] = 0
         self.map_arr[0,0] = 1
         #self.map_arr[x_max-1,0] = 1
         self.map = self.map_arr.tolist()
@@ -42,10 +42,10 @@ class GridWorld:
         action_possibility = self._is_possible_action(to_x, to_y, action)
         if action_possibility == 1:
             self.agent_pos = to_x, to_y
-            return self.agent_pos, -15, False
+            return self.agent_pos, False
         elif action_possibility == 2:
             self.agent_pos = to_x, to_y
-            return self.agent_pos, 0, False
+            return self.agent_pos, False
 
         if action == self.actions["UP"]:
             to_y += -1
@@ -57,9 +57,9 @@ class GridWorld:
             to_x += 1
 
         is_goal = self._is_end_episode(to_x, to_y)  # エピソードの終了の確認
-        reward = self._compute_reward(to_x, to_y)
+        #reward = self._compute_reward(to_x, to_y)
         self.agent_pos = to_x, to_y
-        return self.agent_pos, reward, is_goal
+        return self.agent_pos, is_goal
 
     def _is_end_episode(self, x, y):
         """

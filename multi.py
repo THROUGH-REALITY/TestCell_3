@@ -10,8 +10,8 @@ from main import Plotting
 
 # 定数
 NB_EPISODE = 31   # エピソード数
-X_MAX = 12
-Y_MAX = 12
+X_MAX = 13
+Y_MAX = 13
 POPULATION = 10
 start = time.time()
 
@@ -20,7 +20,7 @@ if __name__ == '__main__':
         x_max=X_MAX,
         y_max=Y_MAX)
 
-    decided_zero = [grid_env.zero_list[10],
+    """decided_zero = [grid_env.zero_list[10],
                     grid_env.zero_list[16],
                     grid_env.zero_list[23],
                     grid_env.zero_list[39],
@@ -29,15 +29,16 @@ if __name__ == '__main__':
                     grid_env.zero_list[53],
                     grid_env.zero_list[68],
                     grid_env.zero_list[79],
-                    grid_env.zero_list[91]]
+                    grid_env.zero_list[91]]"""
     
-    summon = Summon(             # エージェントの召喚
-        zero_list=decided_zero,
-        population=POPULATION)
     print(f"StaRt time = {time.time()-start}")    #times = []
+    fig_made = 0
 
     episode_reward = np.zeros((NB_EPISODE, POPULATION))  # 1エピソードの累積報酬
     for episode in range(NB_EPISODE):   # 実験
+        summon = Summon(             # エージェントの召喚
+        zero_list=grid_env.zero_list,
+        population=POPULATION)
         is_end_episode = np.zeros(POPULATION)
         for i in summon.agents:
             start_x = i.observation[0]
@@ -45,15 +46,24 @@ if __name__ == '__main__':
             grid_env.map[start_x][start_y] = 3
         init_map = np.array(grid_env.map)
         while(np.all(is_end_episode) == False):    # 全員がゴールするまで続ける
+            fig_made += 1
+            plt.imshow(grid_env.map)
+            plt.savefig(f"gif_exp1/fig_{fig_made}.png")
             for id,agent in enumerate(summon.agents):
                 if is_end_episode[id] == False:
                     start_x = agent.observation[0]
                     start_y = agent.observation[1]
                     grid_env.map[start_x][start_y] = 0
-                    action = agent.act()  # 行動選択
-                    state, reward, is_end_episode[id] = grid_env.step(start_x, start_y, action)
+                    action = np.random.randint(0,4)  # 行動選択
+                    state, is_end_episode[id] = grid_env.step(start_x, start_y, action)
+                    if state == (start_x,start_y):
+                        action = np.random.randint(0,4)
+                        state, is_end_episode[id] = grid_env.step(start_x, start_y, action)
+                        if state == (start_x,start_y):
+                            action = np.random.randint(0,3)
+                            state, is_end_episode[id] = grid_env.step(start_x, start_y, action)
                     grid_env.map[state[0]][state[1]] = 3
-                    agent.observe(state, reward)   # 状態と報酬の観測 
+                    agent.observe(state)   # 状態と報酬の観測 
                     episode_reward[episode][id] += 1
                 else:
                     grid_env.map[0][0] = 1
