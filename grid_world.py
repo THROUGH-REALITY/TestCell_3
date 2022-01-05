@@ -21,8 +21,8 @@ class GridWorld:
             "RIGHT": 3
         }
         self.map_arr = np.zeros((y_max,x_max))
-        self.map_arr[::2] = 2 
-        self.map_arr[:, ::2] = 0
+        self.map_arr[:, 1::2] = 2 
+        self.map_arr[::2] = 0
         self.map_arr[0,0] = 1
         #self.map_arr[x_max-1,0] = 1
         self.map = self.map_arr.tolist()

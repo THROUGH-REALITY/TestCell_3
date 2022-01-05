@@ -10,8 +10,8 @@ from main import Plotting
 
 # 定数
 NB_EPISODE = 31   # エピソード数
-X_MAX = 12
-Y_MAX = 12
+X_MAX = 13
+Y_MAX = 13
 POPULATION = 10
 start = time.time()
 
@@ -20,16 +20,16 @@ if __name__ == '__main__':
         x_max=X_MAX,
         y_max=Y_MAX)
 
-    decided_zero = [grid_env.zero_list[10],
-                    grid_env.zero_list[16],
-                    grid_env.zero_list[23],
-                    grid_env.zero_list[39],
-                    grid_env.zero_list[44],
-                    grid_env.zero_list[51],
-                    grid_env.zero_list[53],
-                    grid_env.zero_list[68],
-                    grid_env.zero_list[79],
-                    grid_env.zero_list[91]]
+    decided_zero = [grid_env.zero_list[6],
+                    grid_env.zero_list[22],
+                    grid_env.zero_list[28],
+                    grid_env.zero_list[40],
+                    grid_env.zero_list[54],
+                    grid_env.zero_list[69],
+                    grid_env.zero_list[73],
+                    grid_env.zero_list[87],
+                    grid_env.zero_list[101],
+                    grid_env.zero_list[130]]
     
     summon = Summon(             # エージェントの召喚
         zero_list=decided_zero,
