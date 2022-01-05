@@ -1,4 +1,5 @@
 import time
+import random
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
@@ -10,8 +11,8 @@ from main import Plotting
 
 # 定数
 NB_EPISODE = 31   # エピソード数
-X_MAX = 12
-Y_MAX = 12
+X_MAX = 13
+Y_MAX = 13
 POPULATION = 10
 start = time.time()
 
@@ -36,6 +37,8 @@ if __name__ == '__main__':
         population=POPULATION)
     print(f"StaRt time = {time.time()-start}")    #times = []
 
+    action_exp = [0,2]
+
     episode_reward = np.zeros((NB_EPISODE, POPULATION))  # 1エピソードの累積報酬
     for episode in range(NB_EPISODE):   # 実験
         is_end_episode = np.zeros(POPULATION)
@@ -45,15 +48,17 @@ if __name__ == '__main__':
             grid_env.map[start_x][start_y] = 3
         init_map = np.array(grid_env.map)
         while(np.all(is_end_episode) == False):    # 全員がゴールするまで続ける
+            #plt.imshow(grid_env.map)
+            #plt.show()
             for id,agent in enumerate(summon.agents):
                 if is_end_episode[id] == False:
                     start_x = agent.observation[0]
                     start_y = agent.observation[1]
                     grid_env.map[start_x][start_y] = 0
-                    action = agent.act()  # 行動選択
-                    state, reward, is_end_episode[id] = grid_env.step(start_x, start_y, action)
+                    action = action_exp[int(episode_reward[episode][id])%2]
+                    state, is_end_episode[id] = grid_env.step(start_x, start_y, action)
                     grid_env.map[state[0]][state[1]] = 3
-                    agent.observe(state, reward)   # 状態と報酬の観測 
+                    agent.observe(state)   # 状態と報酬の観測 
                     episode_reward[episode][id] += 1
                 else:
                     grid_env.map[0][0] = 1
