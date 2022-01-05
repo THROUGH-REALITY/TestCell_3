@@ -35,10 +35,10 @@ if __name__ == '__main__':
     """
 
 
-    #print(f"StaRt time = {time.time()-start}")    #times = []
+    print(f"StaRt time = {time.time()-start}")    #times = []
 
     action_exp = [2,3]
-
+    fig_made = 0
     episode_reward = np.zeros((NB_EPISODE, POPULATION))  # 1エピソードの累積報酬
     for episode in range(NB_EPISODE):   # 実験
         summon = Summon(             # エージェントの召喚
@@ -51,8 +51,9 @@ if __name__ == '__main__':
             grid_env.map[start_x][start_y] = 3
         init_map = np.array(grid_env.map)
         while(np.all(is_end_episode) == False):    # 全員がゴールするまで続ける
+            fig_made += 1
             plt.imshow(grid_env.map)
-            plt.show()
+            plt.savefig(f"gif_exp2/fig_{fig_made}.png")
             for id,agent in enumerate(summon.agents):
                 if is_end_episode[id] == False:
                     start_x = agent.observation[0]
@@ -73,7 +74,7 @@ if __name__ == '__main__':
             id.observation = grid_env.reset(id.init_pos)  # 初期化
             #print(summon.agents[id].observation)
         #agent.observe(state)    # エージェントを初期位置に
-        #print(f"EP.{episode +1} End time = {time.time()-start}") #(t = {len(episode_reward)})"# 所要時間の計算
+        print(f"EP.{episode +1} End time = {time.time()-start}") #(t = {len(episode_reward)})"# 所要時間の計算
     fig = plt.figure(figsize=(18,10), tight_layout=True)  # 図を描く大きさと、図の変数名を宣言
     gs = fig.add_gridspec(1, 3)
     ax1 = fig.add_subplot(
