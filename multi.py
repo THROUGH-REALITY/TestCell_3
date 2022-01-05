@@ -87,7 +87,6 @@ if __name__ == '__main__':
         gs[0, 1:],
         xlabel="episode",
         ylabel="times",
-        title="Result",
         xlim=(0,NB_EPISODE-1))
     avg = episode_reward.mean(axis=1)
     print(avg)
@@ -95,6 +94,7 @@ if __name__ == '__main__':
     lines = [ax2.plot(np.arange(NB_EPISODE),avg) for episode in range(NB_EPISODE)]
     y_min, max_y = ax2.get_ylim()
     ax2.set_ylim(0, max_y)
+    ax2.hlines(avg.mean(),0,NB_EPISODE,'red',linestyles='dashed')
     #ax2.legend(handles=lines[::-1], labels=[e for e in range(POPULATION)])
     #fig.legend()
     ax1.xaxis.set_major_locator(ticker.MultipleLocator())
