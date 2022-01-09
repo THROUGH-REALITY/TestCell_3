@@ -9,7 +9,7 @@ from qlearning_agent import Summon
 from main import Plotting
 
 # 定数
-NB_EPISODE = 51   # エピソード数
+NB_EPISODE = 50   # エピソード数
 X_MAX = 13
 Y_MAX = 13
 POPULATION = 10
@@ -85,22 +85,23 @@ if __name__ == '__main__':
     ax2 = fig.add_subplot(
         gs[0, 1:],
         xlabel="episode",
-        ylabel="times",
-        title="Result",
-        xlim=(0,NB_EPISODE-1))
-    avg = episode_reward.mean(axis=1)
-    print(avg)
-    print(avg.mean())
-    lines = [ax2.plot(np.arange(NB_EPISODE),avg) for episode in range(NB_EPISODE)]
+        ylabel="times")
+    #avg = episode_reward.mean(axis=1)
+    #print(avg)
+    #print(avg.mean())
+    print(np.count_nonzero(episode_reward < 187))
+    #lines = [ax2.plot(np.arange(NB_EPISODE), avg) for episode in range(NB_EPISODE)]
+    [ax2.scatter(np.arange(NB_EPISODE), episode_reward[:,id]) for id in range(POPULATION)]
+    #ax2.imshow(episode_reward)
     y_min, max_y = ax2.get_ylim()
-    ax2.set_ylim(0, max_y)
-    ax2.hlines(avg.mean(),0,NB_EPISODE,'red',linestyles='dashed')
-    #ax2.legend(handles=lines[::-1], labels=[e for e in range(POPULATION)])
+    #ax2.set_ylim(0, max_y)
+    ax2.hlines(187,0,NB_EPISODE,'red',linestyles='dashed')
+    #ax2.legend()
     #fig.legend()
     ax1.xaxis.set_major_locator(ticker.MultipleLocator())
     ax1.yaxis.set_major_locator(ticker.MultipleLocator())
-    ax2.xaxis.set_major_locator(ticker.MultipleLocator(5))
-    ax2.yaxis.set_major_locator(ticker.MultipleLocator(100)) 
+    #ax2.xaxis.set_major_locator(ticker.MultipleLocator(5))
+    #ax2.yaxis.set_major_locator(ticker.MultipleLocator()) 
     #Plotting.text(episode_reward,ax2,"deeppink")
     for index,value in enumerate(summon.agents):
         ax1.text(value.init_pos[1], value.init_pos[0], index, size=15, color='deeppink', ha='center', va='center')
