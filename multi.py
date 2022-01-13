@@ -73,17 +73,12 @@ if __name__ == '__main__':
             #print(summon.agents[id].observation)
         #agent.observe(state)    # エージェントを初期位置に
         print(f"EP.{episode +1} End time = {time.time()-start}") #(t = {len(episode_reward)})"# 所要時間の計算
-    fig = plt.figure(figsize=(18,10), tight_layout=True)  # 図を描く大きさと、図の変数名を宣言
-    gs = fig.add_gridspec(1, 3)
-    ax1 = fig.add_subplot(
-        gs[0, 0],
-        xlabel="X",
-        ylabel="Y",
-        title="init_state")
-    ax1.text(0, 0, 'G', size=15, ha='center', va='center', color='white')
-    ax1.imshow(init_map)
+    fig = plt.figure(tight_layout=True)  # 図を描く大きさと、図の変数名を宣言 figsize=(18,10),
+    #gs = fig.add_gridspec(1, 3)
+    #ax1 = fig.add_subplot(gs[0, 0],xlabel="X",ylabel="Y",title="init_state")
+    #ax1.text(0, 0, 'G', size=15, ha='center', va='center', color='white')
+    #ax1.imshow(init_map)
     ax2 = fig.add_subplot(
-        gs[0, 1:],
         xlabel="episode",
         ylabel="times")
     #avg = episode_reward.mean(axis=1)
@@ -96,14 +91,13 @@ if __name__ == '__main__':
     y_min, max_y = ax2.get_ylim()
     #ax2.set_ylim(0, max_y)
     ax2.hlines(187,0,NB_EPISODE,'red',linestyles='dashed')
-    #ax2.legend()
-    #fig.legend()
-    ax1.xaxis.set_major_locator(ticker.MultipleLocator())
-    ax1.yaxis.set_major_locator(ticker.MultipleLocator())
+    plt.rcParams["font.size"] = 28
+    #ax1.xaxis.set_major_locator(ticker.MultipleLocator())
+    #ax1.yaxis.set_major_locator(ticker.MultipleLocator())
     #ax2.xaxis.set_major_locator(ticker.MultipleLocator(5))
     #ax2.yaxis.set_major_locator(ticker.MultipleLocator()) 
     #Plotting.text(episode_reward,ax2,"deeppink")
-    for index,value in enumerate(summon.agents):
-        ax1.text(value.init_pos[1], value.init_pos[0], index, size=15, color='deeppink', ha='center', va='center')
+    #for index,value in enumerate(summon.agents):
+        #ax1.text(value.init_pos[1], value.init_pos[0], index, size=15, color='deeppink', ha='center', va='center')
     plt.savefig(f"result.png")
     plt.show()
