@@ -91,7 +91,8 @@ if __name__ == '__main__':
     y_min, max_y = ax2.get_ylim()
     #ax2.set_ylim(0, max_y)
     ax2.hlines(187,0,NB_EPISODE,'red',linestyles='dashed')
-    plt.rcParams["font.size"] = 28
+    plt.rcParams["font.size"] = 32
+    ax2.set_s = 10
     #ax1.xaxis.set_major_locator(ticker.MultipleLocator())
     #ax1.yaxis.set_major_locator(ticker.MultipleLocator())
     #ax2.xaxis.set_major_locator(ticker.MultipleLocator(5))
