@@ -73,14 +73,12 @@ if __name__ == '__main__':
             #print(summon.agents[id].observation)
         #agent.observe(state)    # エージェントを初期位置に
         print(f"EP.{episode +1} End time = {time.time()-start}") #(t = {len(episode_reward)})"# 所要時間の計算
-    fig = plt.figure(tight_layout=True)  # 図を描く大きさと、図の変数名を宣言 figsize=(18,10),
+    fig = plt.figure(figsize=(9.7,7.5), tight_layout=True)  # 図を描く大きさと、図の変数名を宣言 figsize=(18,10),
     #gs = fig.add_gridspec(1, 3)
     #ax1 = fig.add_subplot(gs[0, 0],xlabel="X",ylabel="Y",title="init_state")
     #ax1.text(0, 0, 'G', size=15, ha='center', va='center', color='white')
     #ax1.imshow(init_map)
-    ax2 = fig.add_subplot(
-        xlabel="episode",
-        ylabel="times")
+    ax2 = fig.add_subplot()
     #avg = episode_reward.mean(axis=1)
     #print(avg)
     #print(avg.mean())
@@ -91,8 +89,9 @@ if __name__ == '__main__':
     y_min, max_y = ax2.get_ylim()
     #ax2.set_ylim(0, max_y)
     ax2.hlines(187,0,NB_EPISODE,'red',linestyles='dashed')
-    plt.rcParams["font.size"] = 32
-    ax2.set_s = 10
+    ax2.set_xlabel("episode",fontsize=18)
+    ax2.set_ylabel("times",fontsize=18)
+    ax2.tick_params(labelsize=20)
     #ax1.xaxis.set_major_locator(ticker.MultipleLocator())
     #ax1.yaxis.set_major_locator(ticker.MultipleLocator())
     #ax2.xaxis.set_major_locator(ticker.MultipleLocator(5))
